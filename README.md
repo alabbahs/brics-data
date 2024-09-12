@@ -5,10 +5,10 @@
 This project is for a wide variety of economic metrics (pertatining to the BRICS countries) provided by a dataset I found on Kaggle, here is the description found on kaggle, along with the link to the website.
 
 ### Description
-This dataset comprises 348 files, each representing a unique economic indicator for the BRICS nations—Brazil, Russia, India, China, and South Africa—spanning from 1970 to 2020. The dataset includes a wide array of economic metrics such as government consumption expenditure, GDP growth, adjusted savings, and various other national accounts data. This comprehensive dataset is ideal for economic research, financial analysis, and policy evaluation, offering a robust foundation for exploring economic trends and making data-driven decisions.
+The dataset on kaggle that inspired this project will no longer be used given that there is a large amount of missing data that can't be imputated effectively and is available in the world bank API, so I will be extracting the individual economic metrics myself using the world bank API, the link to the api will be placed below, the goal will be to extract the most important economic metrics for each of the relevant countries.
 
 ### Link
-https://www.kaggle.com/datasets/munyamdev/brics-economy-data/data
+https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL
 
 ## Motivations
 
