@@ -13,8 +13,7 @@ def clean_data(data):
         rows.extend(
             {
                 "country": country,
-                "indicator_id": indicator['indicator']['id'],
-                "indicator_value": indicator['indicator'].get('value', None),
+                "indicator_value": indicator['indicator'].get('value', None) + f" [{indicator['indicator']['id']}]",
                 "year": indicator['date'],
                 "value": indicator['value']
             }
