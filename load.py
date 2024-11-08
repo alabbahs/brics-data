@@ -2,22 +2,23 @@ from dotenv import dotenv_values
 from psycopg2.extensions import connection, cursor
 import psycopg2
 import pandas as pd
-from pandas import DataFrame 
+from pandas import DataFrame
+from datetime import datetime
 
 config = dotenv_values()
 
-COUNTRY_NAMES = {"BR": "Brazil", "RU": "Russia", "IN": "India", "CN": "China", "ZA": "South Africa",
-                 "US": "United State of America", "GB": "Great Britain", "FR": "France", "DE": "Denmark"}
+COUNTRY_NAMES = {"BR": 0, "RU": 1, "IN": 2, "CN": 3, "ZA": 4,
+                 "US": 5, "GB": 6, "FR": 7, "DE": 8}
 
-METRIC_TITLES = {"NY.GDP.MKTP.CD": "NY.GDP.MKTP.CD[GDP(current USD)]",
-                 "NY.GDP.PCAP.CD": "NY.GDP.PCAP.CD[GDP per capita]",
-                 "FP.CPI.TOTL.ZG": "FP.CPI.TOTL.ZG[Inflation(consumer prices)]",
-                 "NY.GNP.PCAP.CD": 'NY.GNP.PCAP.CD [GNI per capita (Atlas method)]',
-                 "DT.DOD.DECT.CD": 'DT.DOD.DECT.CD [External debt]',
-                 "GC.DOD.TOTL.GD.ZS": 'GC.DOD.TOTL.GD.ZS [Government debt to GDP]',
-                 "NE.RSB.GNFS.CD": 'NE.RSB.GNFS.CD [Trade balance]',
-                 "SP.DYN.LE00.IN": 'SP.DYN.LE00.IN [Life expectancy (proxy for HDI)]',
-                 "BX.KLT.DINV.CD.WD": 'BX.KLT.DINV.CD.WD [Foreign direct investment (net inflows)]'}
+METRIC_TITLES = {"NY.GDP.MKTP.CD": 0,
+                 "NY.GDP.PCAP.CD": 1,
+                 "FP.CPI.TOTL.ZG": 2,
+                 "NY.GNP.PCAP.CD": 3,
+                 "DT.DOD.DECT.CD": 4,
+                 "GC.DOD.TOTL.GD.ZS": 5,
+                 "NE.RSB.GNFS.CD": 6,
+                 "SP.DYN.LE00.IN": 7,
+                 "BX.KLT.DINV.CD.WD": 8}
 
 
 def get_connection() -> connection:
@@ -40,8 +41,12 @@ def load_csv(csv) -> DataFrame:
     return pd.read_csv(csv)
 
 def format_data(cur: cursor, data: DataFrame) -> None:
-    country = cur.execute("LOAD TABLE Indicators ()")
-    
+    country_name = COUNTRY_NAMES[data["country"]]
+    metric_title = METRIC_TITLES[data["indicator_value"]]
+    metric_value = float(data["value"])
+    year = datetime.year(data["year"])
+
+    cur.execute("LOAD TABLE Indicators ()")
     cur.close()
     return None
 
