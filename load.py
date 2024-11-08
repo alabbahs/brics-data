@@ -1,8 +1,24 @@
 from dotenv import dotenv_values
 from psycopg2.extensions import connection, cursor
 import psycopg2
+import pandas as pd
+from pandas import DataFrame 
 
 config = dotenv_values()
+
+COUNTRY_NAMES = {"BR": "Brazil", "RU": "Russia", "IN": "India", "CN": "China", "ZA": "South Africa",
+                 "US": "United State of America", "GB": "Great Britain", "FR": "France", "DE": "Denmark"}
+
+METRIC_TITLES = {"NY.GDP.MKTP.CD": "NY.GDP.MKTP.CD[GDP(current USD)]",
+                 "NY.GDP.PCAP.CD": "NY.GDP.PCAP.CD[GDP per capita]",
+                 "FP.CPI.TOTL.ZG": "FP.CPI.TOTL.ZG[Inflation(consumer prices)]",
+                 "NY.GNP.PCAP.CD": 'NY.GNP.PCAP.CD [GNI per capita (Atlas method)]',
+                 "DT.DOD.DECT.CD": 'DT.DOD.DECT.CD [External debt]',
+                 "GC.DOD.TOTL.GD.ZS": 'GC.DOD.TOTL.GD.ZS [Government debt to GDP]',
+                 "NE.RSB.GNFS.CD": 'NE.RSB.GNFS.CD [Trade balance]',
+                 "SP.DYN.LE00.IN": 'SP.DYN.LE00.IN [Life expectancy (proxy for HDI)]',
+                 "BX.KLT.DINV.CD.WD": 'BX.KLT.DINV.CD.WD [Foreign direct investment (net inflows)]'}
+
 
 def get_connection() -> connection:
     """Establishes and returns a connection to the database."""
@@ -18,6 +34,16 @@ def get_cursor(connection: connection) -> cursor:
     """Retrieves cursor from database connection"""
     cur = connection.cursor()
     return cur
+
+def load_csv(csv) -> DataFrame:
+    """Converts the csv data into pandas DataFrame format"""
+    return pd.read_csv(csv)
+
+def format_data(cur: cursor, data: DataFrame) -> None:
+    country = cur.execute("LOAD TABLE Indicators ()")
+    
+    cur.close()
+    return None
 
 if __name__ == "__main__":
     conn = get_connection()
