@@ -3,7 +3,7 @@ import requests
 import json
 from rich import print
 
-# Define country codes for BRICS and Western competitors TEST
+# Define country codes for BRICS and Western competitors TEST2
 countries = ["BR", "RU", "IN", "CN", "ZA", "US", "GB", "FR", "DE"]
 
 # Define the 10 important economic metrics (indicator codes)
